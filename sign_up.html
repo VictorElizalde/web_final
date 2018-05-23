@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Movies Quick</title>
+
+  <!-- CSS  -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="white" role="navigation">
+    <div class="nav-wrapper container">
+      <a id="logo-container" href="index.html" class="brand-logo">Movies Quick</a>
+    </div>
+  </nav>
+
+  <div id="index-banner" class="parallax-container">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <form>
+            <table border="2">
+              <tr>
+                  <td style="color: #000;">Name: </td>
+                  <td><input type="text" size="20" name="name" id="name"></td>
+              </tr>
+              <tr>
+                  <td style="color: #000;">E-mail address: </td>
+                  <td><input type="text" size="20" name="email" id="email"></td>
+              </tr>
+              <tr>
+                  <td style="color: #000;">Your password:</td>
+                  <td><input type="text" size="20" name="pwd" id="pwd"></td>
+              </tr>
+            </table>
+            <div class="row"></div>
+            <p id="sign_up"><input type="button" value="Sign Up" class="btn-large waves-effect waves-light"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="family_movies.jpg" alt="Unsplashed background img 1"></div>
+  </div>
+
+  <footer class="page-footer teal">
+    <div class="container">
+      <div class="row">
+        <div class="col s5">
+          <h5 class="white-text">Movies Quick</h5>
+          <p class="grey-text text-lighten-4">We rent movies easy and quick. No stress, just entertainment.</p>
+        </div>
+        <div class="col s5 right">
+          <h5 class="white-text center">Location</h5>
+          <ul class="center">
+            <li><a class="white-text">Sumavska 28 Praha 2, Vinohrady 920 00</a></li>
+          </ul>
+          <h5 class="white-text center">Telephone</h5>
+          <ul class="center">
+            <li><a class="white-text"> (73) 4567 1223 </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Victor Elizalde</a>
+      </div>
+    </div>
+  </footer>
+
+  </body>
+
+  <!--  Scripts-->
+  <script src="https://www.gstatic.com/firebasejs/5.0.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.0.1/firebase-auth.js"></script>
+  <script>
+    var config = {
+      apiKey: "AIzaSyDe06TWnp--qZQghQvgqNsvxca4_9wEdWM",
+      authDomain: "movies-quick-3413f.firebaseapp.com",
+      databaseURL: "https://movies-quick-3413f.firebaseio.com",
+      projectId: "movies-quick-3413f",
+      storageBucket: "",
+      messagingSenderId: "465548040314"
+    };
+    firebase.initializeApp(config);
+
+    const btnSignUp = document.getElementById('sign_up');
+    const txtEmail = document.getElementById('email');
+    const txtPassword = document.getElementById('pwd');
+
+    btnSignUp.addEventListener('click', e => {
+        const email = txtEmail.value;
+        const password = txtPassword.value;
+        const promise = firebase.auth().createUserWithEmailAndPassword(email,password)
+        .then(function(firebaseUser) {
+            document.location.href = "home.php"
+        });
+        promise.catch(e => alert(e.message));
+    });
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+      if(firebaseUser) {
+          console.log(firebaseUser);
+          document.location.href = "home.php"
+      } else {
+          console.log('not logged in');
+      }
+    });
+  </script>
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+  </html>
