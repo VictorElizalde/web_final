@@ -90,13 +90,23 @@
     const btnSignUp = document.getElementById('sign_up');
     const txtEmail = document.getElementById('email');
     const txtPassword = document.getElementById('pwd');
+    const txtName = document.getElementById('name');
 
     btnSignUp.addEventListener('click', e => {
         const email = txtEmail.value;
         const password = txtPassword.value;
+        const name = txtName.value;
         const promise = firebase.auth().createUserWithEmailAndPassword(email,password)
         .then(function(firebaseUser) {
-            document.location.href = "home.php"
+            // document.location.href = "home.php"
+            $.ajax({
+                    type: "POST",
+                    url:"sign_up.php",
+                    data: {'name': name,'email': email},
+                    success: function(data) {
+                        document.location.href = "home.php";
+                    }
+                });
         });
         promise.catch(e => alert(e.message));
     });

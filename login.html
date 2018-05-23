@@ -96,7 +96,14 @@
         const password = txtPassword.value;
         const promise = firebase.auth().signInWithEmailAndPassword(email,password)
         .then(function(firebaseUser) {
-            document.location.href= "home.php";
+          $.ajax({
+            type: "POST",
+            url:"login.php",
+            data: {'email': email},
+            success: function(data) {
+              document.location.href="home.php";
+            }
+          });
         });
         promise.catch(e => alert(e.message));
     });

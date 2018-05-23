@@ -30,7 +30,7 @@
             <h5 class="header col s12 light">We rent movies easy and quick. No stress, just entertainment.</h5>
           </div>
           <div class="row center">
-            <a href="#" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Rent now!</a>
+            <a href="#movies" id="download-button" class="btn-large waves-effect waves-light teal lighten-1">Rent now!</a>
           </div>
           <br><br>
 
@@ -109,7 +109,7 @@
             die('Connection failed: ' . mysqli_connect_error());
         }
 
-        $sql = "SELECT name, description, duration, rating, photo from Movies";
+        $sql = "SELECT name, description, duration, rating, photo, user_id from Movies";
         $result = mysqli_query($conn, $sql);
     ?>
 
@@ -131,9 +131,15 @@
                       <?php echo "<p>".$row['duration']." minutes" ?>
                     </div>
                   </div>
-                  <div class="card-action" style="background-color: #009688">
-                    <a href="#" class="white-text">Rent now!</a>
-                  </div>
+                  <?php if($row["user_id"] == NULL) {?>
+                    <?php echo "<div class=\"card-action\" style=\"background-color: #009688\" id=\"".$row['name']."\" onclick =\"rent(this.id);\">" ?>
+                      <a class="white-text">Rent now!</a>
+                    <?php echo "</div>"; ?>
+                  <?php } else {?>
+                    <?php echo "<div class=\"card-action\" style=\"background-color: #009688\" id=\"".$row['name']."\">" ?>
+                      <a class="white-text">NOT AVAILABLE</a>
+                    <?php echo "</div>"; ?>
+                  <?php } ?>
                 </div>
               </div>
             <?php } ?>
@@ -142,6 +148,11 @@
       </div>
       <div class="parallax"><img src="curtain.jpg" alt="Unsplashed background img 3"></div>
     </div>
+
+    <?php
+      mysqli_close($conn);
+      mysqli_free_result($result);
+    ?>
 
     <footer class="page-footer teal">
       <div class="container">
@@ -198,6 +209,17 @@
         document.location.href = "index.html";
       }
     });
+
+    function rent(id) {
+      $.ajax({
+          type: "POST",
+          url:"rent.php",
+          data: {'movie': id},
+          success: function(data) {
+              document.location.href="home.php";
+          }
+      });
+    }
   </script>
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="js/materialize.js"></script>
